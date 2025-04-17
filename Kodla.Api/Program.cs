@@ -1,5 +1,5 @@
-using Kodla.Api;
 using Kodla.Core.Messages;
+using Kodla.Common.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 
