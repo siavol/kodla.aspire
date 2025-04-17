@@ -1,9 +1,16 @@
+using ApiService;
+using ApiService.RequestBookingMessage;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+
+builder.AddKafkaProducer<string, BookingRequestMessage>("kafka", producerBuilder => {
+    producerBuilder.SetValueSerializer(new SimpleJsonKafkaSerializer<BookingRequestMessage>());
+});
 
 var app = builder.Build();
 

@@ -1,10 +1,14 @@
+using ApiService.RequestBookingMessage;
+using Confluent.Kafka;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiService.Controllers
 {
     [ApiController]
     [Route("api/bookings")]
-    public class BookingController(ILogger<BookingController> logger) : ControllerBase
+    public class BookingController(
+        IProducer<string, BookingRequestMessage> bookingRequestProducer,
+        ILogger<BookingController> logger) : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()
@@ -15,5 +19,32 @@ namespace ApiService.Controllers
                 Message = "Booking information"
             });
         }
+
+        [HttpPost("request")]
+        public IActionResult RequestBooking(
+            [FromBody] BookingRequestBody body
+        ) 
+        {
+            logger.LogInformation("Requesting booking for {UserName} on {MeetupId}", body.UserName, body.MeetupId);
+
+            var bookingRequestMessage = new BookingRequestMessage
+            {
+                BookingId = Guid.NewGuid().ToString(),
+                MeetupId = body.MeetupId,
+                UserName = body.UserName
+            };
+
+            bookingRequestProducer.Produce("booking-request", new Message<string, BookingRequestMessage>
+            {
+                Key = bookingRequestMessage.MeetupId,
+                Value = bookingRequestMessage
+            });
+
+            return Accepted(new { 
+                Message = "Booking request accepted"
+            });
+        }
     }
+
+    public record BookingRequestBody(string MeetupId, string UserName);
 }
