@@ -8,12 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Aspire.MassTransit.RabbitMQ" Version="9.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Kodla.Common.Core\Kodla.Common.Core.csproj" />
-    <ProjectReference Include="..\Kodla.Common.Kafka\Kodla.Common.Kafka.csproj" />
     <ProjectReference Include="..\Kodla.Common.ServiceDefaults\Kodla.Common.ServiceDefaults.csproj" />
   </ItemGroup>
 </Project>

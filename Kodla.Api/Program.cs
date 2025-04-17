@@ -1,6 +1,3 @@
-using Kodla.Core.Messages;
-using Kodla.Common.Kafka;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -8,10 +5,7 @@ builder.AddServiceDefaults();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-// register kafka producers
-builder.AddKafkaProducer<string, BookingRequestMessage>("kafka", producerBuilder => {
-    producerBuilder.SetValueSerializer(new SimpleJsonKafkaSerializer<BookingRequestMessage>());
-});
+builder.AddMassTransitRabbitMq("rabbitmq");     
 
 var app = builder.Build();
 

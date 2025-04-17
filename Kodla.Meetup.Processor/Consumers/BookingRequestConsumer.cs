@@ -1,46 +1,15 @@
-using System.Diagnostics;
-using Confluent.Kafka;
+using MassTransit;
 using Kodla.Core.Messages;
 
 namespace Kodla.Meetup.Processor.Consumers;
 
-public class BookingRequestConsumer(
-    IConsumer<string, BookingRequestMessage> consumer,
-    ILogger<BookingRequestConsumer> logger) : BackgroundService
+public class BookingRequestConsumer(ILogger<BookingRequestConsumer> logger) : IConsumer<BookingRequestMessage>
 {
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    public Task Consume(ConsumeContext<BookingRequestMessage> context)
     {
-        consumer.Subscribe(BookingRequestMessage.Topic);
-
-        Task.Run(() =>
-        {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                try
-                {
-                    var result = consumer.Consume(stoppingToken);
-                    if (result.IsPartitionEOF) continue;
-
-                    var bookingRequest = result.Message.Value;
-
-                    using var activity = new Activity("BookingRequestConsumer.Consume");
-                    activity.SetTag("MeetupId", bookingRequest.MeetupId);
-                    activity.Start();
-                    
-                    var message = bookingRequest;
-                    logger.LogInformation("Received booking request: {BookingId} for meetup {MeetupId} by {UserName}",
-                        message.BookingId, message.MeetupId, message.UserName);
-
-                    activity.Stop();
-                }
-                catch (ConsumeException e)
-                {
-                    logger.LogError(e, "Error occurred: {ErrorReason}", e.Error.Reason);
-                    throw;
-                }
-            }
-        }, stoppingToken);
-
+        var bookingRequest = context.Message;
+        logger.LogInformation("Received booking request: {BookingId} for meetup {MeetupId} by {UserName}",
+            bookingRequest.BookingId, bookingRequest.MeetupId, bookingRequest.UserName);
         return Task.CompletedTask;
     }
 }

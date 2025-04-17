@@ -1,5 +1,5 @@
-using Confluent.Kafka;
 using Kodla.Core.Messages;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kodla.Api.Controllers;
@@ -7,7 +7,7 @@ namespace Kodla.Api.Controllers;
 [ApiController]
 [Route("api/bookings")]
 public class BookingController(
-    IProducer<string, BookingRequestMessage> bookingRequestProducer,
+    IBus messageBus,
     ILogger<BookingController> logger) : ControllerBase
 {
     [HttpGet]
@@ -34,11 +34,12 @@ public class BookingController(
             UserName = body.UserName
         };
 
-        bookingRequestProducer.Produce(BookingRequestMessage.Topic, new Message<string, BookingRequestMessage>
-        {
-            Key = bookingRequestMessage.MeetupId,
-            Value = bookingRequestMessage
-        });
+        messageBus.Publish(bookingRequestMessage);
+        // bookingRequestProducer.Produce(BookingRequestMessage.Topic, new Message<string, BookingRequestMessage>
+        // {
+        //     Key = bookingRequestMessage.MeetupId,
+        //     Value = bookingRequestMessage
+        // });
 
         return Accepted(new { 
             Message = "Booking request accepted"
