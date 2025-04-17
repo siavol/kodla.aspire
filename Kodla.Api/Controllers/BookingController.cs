@@ -34,7 +34,7 @@ public class BookingController(
             UserName = body.UserName
         };
 
-        bookingRequestProducer.Produce("booking-request", new Message<string, BookingRequestMessage>
+        bookingRequestProducer.Produce(BookingRequestMessage.Topic, new Message<string, BookingRequestMessage>
         {
             Key = bookingRequestMessage.MeetupId,
             Value = bookingRequestMessage

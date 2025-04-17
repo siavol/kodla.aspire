@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kodla.Api\Kodla.Api.csproj" />
+    <ProjectReference Include="..\Kodla.Meetup.Processor\Kodla.Meetup.Processor.csproj" />
   </ItemGroup>
 
 </Project>
