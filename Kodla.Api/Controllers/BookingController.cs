@@ -1,8 +1,8 @@
-using ApiService.RequestBookingMessage;
+using Kodla.Api.RequestBookingMessage;
 using Confluent.Kafka;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ApiService.Controllers
+namespace Kodla.Api.Controllers
 {
     [ApiController]
     [Route("api/bookings")]

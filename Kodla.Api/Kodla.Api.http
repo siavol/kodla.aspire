@@ -1,0 +1,14 @@
+@Kodla_Api_HostAddress = http://localhost:5263
+
+
+GET {{Kodla_Api_HostAddress}}/api/bookings
+
+###
+
+POST {{Kodla_Api_HostAddress}}/api/bookings/request
+Content-Type: application/json
+
+{
+    "MeetupId": "HelsinkiJS",
+    "UserName": "Ilya"
+}

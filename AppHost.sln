@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost", "AppHost\AppHost.csproj", "{3123EAF2-7033-43B1-8872-F4A7AAE2D3BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDefaults", "ServiceDefaults\ServiceDefaults.csproj", "{C828D46A-79AA-4795-957B-714CEA9E415C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kodla.ServiceDefaults", "Kodla.ServiceDefaults\Kodla.ServiceDefaults.csproj", "{C828D46A-79AA-4795-957B-714CEA9E415C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiService", "ApiService\ApiService.csproj", "{970108B1-6D91-4ECE-873F-FDAE0AE0D50D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kodla.Api", "Kodla.Api\Kodla.Api.csproj", "{970108B1-6D91-4ECE-873F-FDAE0AE0D50D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

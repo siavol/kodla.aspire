@@ -2,7 +2,7 @@ using System.Text;
 using System.Text.Json;
 using Confluent.Kafka;
 
-namespace ApiService
+namespace Kodla.Api
 {
     internal class SimpleJsonKafkaSerializer<T> : ISerializer<T>
     {

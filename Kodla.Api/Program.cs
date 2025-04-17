@@ -1,5 +1,5 @@
-using ApiService;
-using ApiService.RequestBookingMessage;
+using Kodla.Api;
+using Kodla.Api.RequestBookingMessage;
 
 var builder = WebApplication.CreateBuilder(args);
 

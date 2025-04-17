@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApiService\ApiService.csproj" />
+    <ProjectReference Include="..\Kodla.Api\Kodla.Api.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@ var kafka = builder.AddKafka("kafka")
     })
     .WithLifetime(ContainerLifetime.Persistent);
 
-builder.AddProject<ApiService>("api-service")
+builder.AddProject<Kodla_Api>("api-service")
     .WithReference(kafka)
     .WaitFor(kafka);
 
