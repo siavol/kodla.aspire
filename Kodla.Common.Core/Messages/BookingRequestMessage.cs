@@ -1,4 +1,4 @@
-namespace Kodla.Api.RequestBookingMessage
+namespace Kodla.Core.Messages
 {
     public class BookingRequestMessage
     {

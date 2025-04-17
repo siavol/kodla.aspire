@@ -1,5 +1,5 @@
-using Kodla.Api.RequestBookingMessage;
 using Confluent.Kafka;
+using Kodla.Core.Messages;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kodla.Api.Controllers

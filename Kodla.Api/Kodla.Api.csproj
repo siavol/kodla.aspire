@@ -12,7 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kodla.ServiceDefaults\Kodla.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Kodla.Common.Core\Kodla.Common.Core.csproj" />
+    <ProjectReference Include="..\Kodla.Common.ServiceDefaults\Kodla.Common.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>
