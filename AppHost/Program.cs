@@ -1,12 +1,15 @@
 using Confluent.Kafka;
 using Confluent.Kafka.Admin;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
 // Setup Kafka
 //
-var kafka = builder.AddKafka("kafka")
+const int KafkaPort = 9092; // port have to be static to workaround https://github.com/dotnet/aspire/issues/6651
+var kafka = builder.AddKafka("kafka", KafkaPort)
     .WithKafkaUI(kafkaUiBuilder => {
         kafkaUiBuilder.WithLifetime(ContainerLifetime.Persistent);
     })
@@ -14,6 +17,7 @@ var kafka = builder.AddKafka("kafka")
 
 builder.Eventing.Subscribe<ResourceReadyEvent>(kafka.Resource, async (@event, ct) =>
 {
+    var logger = @event.Services.GetRequiredService<ILogger<Program>>();
     var cs = await kafka.Resource.ConnectionStringExpression.GetValueAsync(ct);
 
     var config = new AdminClientConfig
@@ -22,10 +26,22 @@ builder.Eventing.Subscribe<ResourceReadyEvent>(kafka.Resource, async (@event, ct
     };
 
     using var adminClient = new AdminClientBuilder(config).Build();
-    await adminClient.CreateTopicsAsync(
-    [
+    try 
+    {
+        logger.LogInformation("Creating kafka topics");
+        await adminClient.CreateTopicsAsync(
+        [
             new TopicSpecification { Name = "booking-request", NumPartitions = 2, ReplicationFactor = 1 }
-    ]);
+        ]);
+    } 
+    catch (CreateTopicsException e) 
+    {
+        if (e.Results.First().Error.Code == ErrorCode.TopicAlreadyExists) {
+            logger.LogInformation("Topic already exists: {Topic}, skip.", e.Results.First().Topic);
+        } else {
+            throw;
+        }
+    }
 });
 
 

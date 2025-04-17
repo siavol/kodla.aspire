@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Confluent.Kafka;
 using Kodla.Core.Messages;
 
@@ -20,9 +21,17 @@ public class BookingRequestConsumer(
                     var result = consumer.Consume(stoppingToken);
                     if (result.IsPartitionEOF) continue;
 
-                    var message = result.Message.Value;
+                    var bookingRequest = result.Message.Value;
+
+                    using var activity = new Activity("BookingRequestConsumer.Consume");
+                    activity.SetTag("MeetupId", bookingRequest.MeetupId);
+                    activity.Start();
+                    
+                    var message = bookingRequest;
                     logger.LogInformation("Received booking request: {BookingId} for meetup {MeetupId} by {UserName}",
                         message.BookingId, message.MeetupId, message.UserName);
+
+                    activity.Stop();
                 }
                 catch (ConsumeException e)
                 {
