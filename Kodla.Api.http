@@ -6,10 +6,6 @@ GET {{Kodla_Api_HostAddress}}/api/meetups
 
 ###
 
-GET {{Kodla_Api_HostAddress}}/api/bookings
-
-###
-
 @meetupId = 1
 
 POST {{Kodla_Api_HostAddress}}/api/meetups/{{meetupId}}/attendies

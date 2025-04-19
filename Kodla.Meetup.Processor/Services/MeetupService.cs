@@ -21,8 +21,7 @@ public class MeetupService(
                 Id = m.Id,
                 Name = m.Name,
                 Description = m.Description,
-                Date = m.Date.ToString("O"),
-                MaxAttendees = m.MaxAttendees
+                Date = m.Date.ToString("O")
             })
             .ToArrayAsync();
 

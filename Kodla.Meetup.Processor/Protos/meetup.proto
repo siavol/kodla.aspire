@@ -20,5 +20,4 @@ message Meetup {
     string name = 2;
     string description = 3;
     string date = 4; // Use ISO 8601 format for date serialization
-    int32 max_attendees = 5;
 }

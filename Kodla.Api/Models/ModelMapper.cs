@@ -7,7 +7,6 @@ public static class ModelMapper
         Id = meetup.Id,
         Name = meetup.Name,
         Description = meetup.Description,
-        Date = DateTime.Parse(meetup.Date),
-        MaxAttendees = meetup.MaxAttendees
+        Date = DateTime.Parse(meetup.Date)
     };
 }
