@@ -1,5 +1,10 @@
 @Kodla_Api_HostAddress = http://localhost:5263
 
+###
+
+GET {{Kodla_Api_HostAddress}}/api/meetups
+
+###
 
 GET {{Kodla_Api_HostAddress}}/api/bookings
 
