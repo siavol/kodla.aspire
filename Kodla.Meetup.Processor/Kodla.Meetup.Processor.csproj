@@ -10,10 +10,17 @@
   <ItemGroup>
     <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.2.0" />
     <PackageReference Include="CommunityToolkit.Aspire.MassTransit.RabbitMQ" Version="9.2.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.70.0" />
+    <PackageReference Include="Grpc.AspNetCore.HealthChecks" Version="2.70.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Kodla.Common.Core\Kodla.Common.Core.csproj" />
     <ProjectReference Include="..\Kodla.Common.ServiceDefaults\Kodla.Common.ServiceDefaults.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Protobuf Include="Protos\meetup.proto" GrpcServices="Server" />
+  </ItemGroup>
+
 </Project>

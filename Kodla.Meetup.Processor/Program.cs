@@ -1,13 +1,13 @@
 using Kodla.Meetup.Processor.Consumers;
 using Kodla.Meetup.Processor.Data;
+using Kodla.Meetup.Processor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-// Migrate to gRPC?
-builder.Services.AddControllers();
-// builder.Services.AddOpenApi();
+builder.Services.AddGrpc();
+builder.Services.AddGrpcHealthChecks();
 
 builder.AddMassTransitRabbitMq(
     "rabbitmq",
@@ -23,7 +23,7 @@ builder.EnrichSqlServerDbContext<MeetupDbContext>();
 
 var app = builder.Build();
 
-app.MapControllers();
+app.MapGrpcService<MeetupService>();
 app.UseHttpsRedirection();
 
 app.Run();

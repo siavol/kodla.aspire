@@ -1,4 +1,5 @@
 using Kodla.Api.Clients;
+using Kodla.Meetup.Processor.Grpc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +10,10 @@ builder.AddMassTransitRabbitMq("rabbitmq");
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-builder.Services.AddHttpClient<MeetupProcessorClient>(
-    static client => client.BaseAddress = new("https+http://meetup-processor-service"));
+var isHttps = builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https";
+builder.Services
+    .AddSingleton<MeetupProcessorClient>()
+    .AddGrpcServiceReference<MeetupGrpcService.MeetupGrpcServiceClient>($"{(isHttps ? "https" : "http")}://meetup-processor-service");
 
 var app = builder.Build();
 

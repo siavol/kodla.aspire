@@ -8,12 +8,21 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Aspire.MassTransit.RabbitMQ" Version="9.2.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.70.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.71.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Kodla.Common.Core\Kodla.Common.Core.csproj" />
     <ProjectReference Include="..\Kodla.Common.ServiceDefaults\Kodla.Common.ServiceDefaults.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\Kodla.Meetup.Processor\Protos\meetup.proto" GrpcServices="Client" Link="Protos\meetup.proto" />
   </ItemGroup>
 
 </Project>

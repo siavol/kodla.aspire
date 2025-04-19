@@ -1,15 +1,11 @@
-using Entities = Kodla.Common.Core.Entities;
+using Kodla.Meetup.Processor.Grpc;
 
 namespace Kodla.Api.Clients;
 
-public class MeetupProcessorClient(HttpClient httpClient)
-{
-    public async Task<IEnumerable<Entities.Meetup>> GetAllMeetupsAsync()
+public class MeetupProcessorClient(MeetupGrpcService.MeetupGrpcServiceClient client) {
+    public async Task<IEnumerable<Meetup.Processor.Grpc.Meetup>> GetAllMeetupsAsync()
     {
-        var response = await httpClient.GetAsync("api/meetups");
-        response.EnsureSuccessStatusCode();
-
-        var meetups = await response.Content.ReadFromJsonAsync<IEnumerable<Entities.Meetup>>();
-        return meetups ?? [];
+        var response = await client.GetAllMeetupsAsync(new GetMeetupsRequest());
+        return response.Meetups;
     }
 }

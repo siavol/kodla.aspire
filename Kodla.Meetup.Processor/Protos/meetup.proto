@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option csharp_namespace = "Kodla.Meetup.Processor.Grpc";
+
+package MeetupApi;
+
+service MeetupGrpcService {
+    rpc GetAllMeetups(GetMeetupsRequest) returns (GetMeetupsResponse);
+}
+
+message GetMeetupsRequest {
+}
+
+message GetMeetupsResponse {
+    repeated Meetup meetups = 1;
+}
+
+message Meetup {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    string date = 4; // Use ISO 8601 format for date serialization
+    int32 max_attendees = 5;
+}

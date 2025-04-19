@@ -6,8 +6,8 @@ public class MeetupDbContext(DbContextOptions<MeetupDbContext> options) : DbCont
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Common.Core.Entities.Meetup>().ToTable("Meetup");
+        modelBuilder.Entity<Entities.Meetup>().ToTable("Meetup");
     }
     
-    public DbSet<Common.Core.Entities.Meetup> Meetups { get; set; }
+    public DbSet<Entities.Meetup> Meetups { get; set; }
 }
