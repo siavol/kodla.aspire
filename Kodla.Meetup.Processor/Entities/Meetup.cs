@@ -7,4 +7,6 @@ public class Meetup
     public string Description { get; set; } = string.Empty;
     public DateTime Date { get; set; }
     public int MaxAttendees { get; set; }
+
+    public List<Attendee> Attendees { get; set; } = [];
 }

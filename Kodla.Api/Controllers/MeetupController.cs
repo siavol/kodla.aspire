@@ -1,5 +1,6 @@
 using Kodla.Api.Clients;
 using Kodla.Api.Models;
+using Kodla.Common.Core.Messages;
 using Kodla.Core.Messages;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
@@ -29,10 +30,10 @@ public class MeetupsController(
     {
         logger.LogInformation("Attendee request to meetup {MeetupId} from {UserName}", meetupId, body.UserName);
 
-        var bookingId = Guid.NewGuid().ToString();
-        var bookingRequestMessage = new BookingRequestMessage
+        var requestId = Guid.NewGuid().ToString();
+        var bookingRequestMessage = new MeetupAttendRequestMessage
         {
-            BookingId = bookingId,
+            RequestId = requestId,
             MeetupId = meetupId,
             UserName = body.UserName
         };
@@ -40,7 +41,7 @@ public class MeetupsController(
 
         return Ok(new { 
             Message = "Booking request accepted",
-            BookingId = bookingId,
+            RequestId = requestId,
         });
     }
 }

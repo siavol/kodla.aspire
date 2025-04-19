@@ -14,7 +14,8 @@ builder.AddMassTransitRabbitMq(
     options => { options.DisableTelemetry = false; },
     masstransitConfiguration =>
     {
-        masstransitConfiguration.AddConsumer<BookingRequestConsumer>();
+        masstransitConfiguration.AddConsumer<MeetupAttendRequestConsumer>();
+        masstransitConfiguration.AddConsumer<AttendeeAddedConsumer>();
     }
 );
 

@@ -15,6 +15,13 @@ CREATE TABLE [Meetup] (
     [MaxAttendees] INT NOT NULL
 );
 GO
+CREATE TABLE [Attendee] (
+    [Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    [Name] NVARCHAR(255) NOT NULL,
+    [MeetupId] INT NOT NULL,
+    FOREIGN KEY (MeetupId) REFERENCES Meetup(Id)
+);
+GO
 
 -- Seeding data
 INSERT INTO [Meetup] ([Name], [Description], [Date], [MaxAttendees])
