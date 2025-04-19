@@ -22,4 +22,10 @@
     <ProjectReference Include="..\Kodla.Meetup.Processor\Kodla.Meetup.Processor.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Scripts\CreateMeetupDb.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

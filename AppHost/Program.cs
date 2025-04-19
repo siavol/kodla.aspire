@@ -16,30 +16,8 @@ builder.AddProject<Kodla_Api>("api-service")
     .WithReference(rabbitmq).WaitFor(rabbitmq);
 
 const string meetupDbName = "meetup-db";
-const string meetupDbCreateScript = $$"""
-    IF DB_ID('{{meetupDbName}}') IS NULL
-        CREATE DATABASE [{{meetupDbName}}];
-    GO
-
-    -- Use the database
-    USE [{{meetupDbName}}];
-    GO
-
-    -- Create tables
-    CREATE TABLE [Meetup] (
-        [Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-        [Name] NVARCHAR(255) NOT NULL,
-        [Description] NVARCHAR(MAX) NOT NULL,
-        [Date] DATETIME2 NOT NULL,
-        [MaxAttendees] INT NOT NULL
-    );
-    GO
-
-    -- Seeding data
-    INSERT INTO [Meetup] ([Name], [Description], [Date], [MaxAttendees])
-    VALUES
-        ('Best Meetup', 'The best meetup in Uusimmaa area. Learn some cool stuffю', '2025-06-10 10:00:00', 20);
-""";
+var meetupDbCreateScript = File.ReadAllText("Scripts/CreateMeetupDb.sql")
+    .Replace("{{meetupDbName}}", meetupDbName);
 var meetupDb = sqlServer.AddDatabase(meetupDbName)
     .WithCreationScript(meetupDbCreateScript);
 builder.AddProject<Kodla_Meetup_Processor>("meetup-processor-service")
