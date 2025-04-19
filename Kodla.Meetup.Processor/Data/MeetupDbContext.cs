@@ -4,5 +4,10 @@ namespace Kodla.Meetup.Processor.Data;
 
 public class MeetupDbContext(DbContextOptions<MeetupDbContext> options) : DbContext(options)
 {
-    public DbSet<Entities.Meetup> Meetups { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Common.Core.Entities.Meetup>().ToTable("Meetup");
+    }
+    
+    public DbSet<Common.Core.Entities.Meetup> Meetups { get; set; }
 }

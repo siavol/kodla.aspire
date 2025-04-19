@@ -1,4 +1,4 @@
-using Entities = Kodla.Meetup.Processor.Entities;
+using Entities = Kodla.Common.Core.Entities;
 
 namespace Kodla.Api.Models;
 

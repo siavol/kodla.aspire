@@ -1,4 +1,4 @@
-namespace Kodla.Meetup.Processor.Entities;
+namespace Kodla.Common.Core.Entities;
 
 public class Meetup
 {

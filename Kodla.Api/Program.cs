@@ -1,11 +1,16 @@
+using Kodla.Api.Clients;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+builder.AddMassTransitRabbitMq("rabbitmq");
+
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-builder.AddMassTransitRabbitMq("rabbitmq");     
+builder.Services.AddHttpClient<MeetupProcessorClient>(
+    static client => client.BaseAddress = new("https+http://meetup-processor-service"));
 
 var app = builder.Build();
 
@@ -18,6 +23,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 
 app.Run();
