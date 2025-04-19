@@ -10,10 +10,11 @@ GET {{Kodla_Api_HostAddress}}/api/bookings
 
 ###
 
-POST {{Kodla_Api_HostAddress}}/api/bookings/request
+@meetupId = 1
+
+POST {{Kodla_Api_HostAddress}}/api/meetups/{{meetupId}}/attendies
 Content-Type: application/json
 
 {
-    "MeetupId": "HelsinkiJS",
     "UserName": "Ilya"
 }
