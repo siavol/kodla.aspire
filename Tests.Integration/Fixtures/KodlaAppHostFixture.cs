@@ -41,7 +41,6 @@ public class KodlaAppHostFixture : IAsyncLifetime
 
         _apiHttpClient = _app.CreateHttpClient("api-service");
         await _app.ResourceNotifications.WaitForResourceHealthyAsync("api-service").WaitAsync(DefaultTimeout);
-
     }
 
     Task IAsyncLifetime.DisposeAsync()

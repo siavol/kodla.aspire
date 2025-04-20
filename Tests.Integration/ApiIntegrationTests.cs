@@ -2,7 +2,7 @@ using Tests.Integration.Fixtures;
 
 namespace Tests.Integration;
 
-public class IntegrationTest(KodlaAppHostFixture appHost) : IClassFixture<KodlaAppHostFixture>
+public class ApiIntegrationTests(KodlaAppHostFixture appHost) : IClassFixture<KodlaAppHostFixture>
 {
     [Fact]
     public async Task GetWebResourceRootReturnsOkStatusCode()
