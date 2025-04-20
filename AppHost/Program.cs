@@ -10,6 +10,18 @@ var rabbitmq = builder.AddRabbitMQ("rabbitmq")
 var sqlServer = builder.AddSqlServer("sqlserver")
     .WithLifetime(ContainerLifetime.Persistent);
 
+if (builder.Environment.EnvironmentName == "Testing")
+{
+    // Use temporary containers for testing to avoid conflicts
+    var sessionId = Guid.NewGuid().ToString("N")[..5];
+    sqlServer
+        .WithContainerName($"test-sqlserver-{sessionId}")
+        .WithLifetime(ContainerLifetime.Session);
+    rabbitmq
+        .WithContainerName($"test-rabbitmq-{sessionId}")
+        .WithLifetime(ContainerLifetime.Session);
+}
+
 // Setup projects
 //
 const string meetupDbName = "meetup-db";

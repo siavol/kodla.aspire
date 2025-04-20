@@ -16,7 +16,9 @@ public class KodlaAppHostFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        var appHostBuilder = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>();
+        var appHostBuilder = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>([
+            "--environment=Testing"
+        ]);
         appHostBuilder.Services.AddLogging(logging =>
         {
             logging.SetMinimumLevel(LogLevel.Debug);
