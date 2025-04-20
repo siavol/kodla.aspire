@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Kodla.Api.Clients;
+using Kodla.Api.Consumers;
 using Kodla.Api.Repositories;
 using Kodla.Meetup.Processor.Grpc;
 
@@ -7,7 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.AddMassTransitRabbitMq("rabbitmq");
+builder.AddMassTransitRabbitMq("rabbitmq",
+    options => { options.DisableTelemetry = false; },
+    masstransitConfiguration =>
+    {
+        masstransitConfiguration.AddConsumer<AttendeeStatusChangedConsumer>();
+    });
 builder.AddRedisClient("cache");
 
 builder.Services.AddControllers()

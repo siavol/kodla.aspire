@@ -14,3 +14,9 @@ Content-Type: application/json
 {
     "UserName": "Ilya"
 }
+
+###
+
+@requestId = tbd
+
+GET {{Kodla_Api_HostAddress}}/api/requests/{{requestId}}

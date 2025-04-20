@@ -1,5 +1,4 @@
 using MassTransit;
-using Kodla.Core.Messages;
 using Kodla.Meetup.Processor.Data;
 using Microsoft.EntityFrameworkCore;
 using Kodla.Common.Core.Messages;
@@ -30,7 +29,8 @@ public class MeetupAttendRequestConsumer(
 
         await bus.Publish(new AttendeeAddedMessage {
             MeetupId = bookingRequest.MeetupId,
-            AttendeeName = bookingRequest.UserName
+            RequestId = bookingRequest.RequestId,
+            AttendeeName = bookingRequest.UserName,
         });
     }
 }

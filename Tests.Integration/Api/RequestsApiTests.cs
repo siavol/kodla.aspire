@@ -41,5 +41,40 @@ public class RequestsApiTests(KodlaAppHostFixture appHost)
         Assert.Equal("Processing", body.Status);
     }
 
+    [Fact]
+    public async Task GET_Attendee_Request_Should_Respond_OK_WithConfirmedStatus_When_RequestAccepted() 
+    {
+        // Arrange
+        var meetupId = "1";
+        var requestBody = new
+        {
+            UserName = "John Doe"
+        };
+        var attendeeResponse = await appHost.ApiHttpClient.PostAsJsonAsync($"/api/meetups/{meetupId}/attendies", requestBody);
+        attendeeResponse.EnsureSuccessStatusCode();
+        var attendeeRequestRes = await attendeeResponse.Content.ReadFromJsonAsync<MeetupAttendeeResponse>();
+        var requestId = attendeeRequestRes!.RequestId;
+
+        // Act
+        var timeout = TimeSpan.FromSeconds(10);
+        var pollingInterval = TimeSpan.FromMilliseconds(100);
+        var startTime = DateTime.UtcNow;
+        AttendeeStatusResponse? body;
+        do
+        {
+            await Task.Delay(pollingInterval);
+
+            var statusResponse = await appHost.ApiHttpClient.GetAsync($"/api/requests/{requestId}");
+            statusResponse.EnsureSuccessStatusCode();
+            body = await statusResponse.Content.ReadFromJsonAsync<AttendeeStatusResponse>();
+
+            if (body!.Status == "Processing") continue;
+        } while (DateTime.UtcNow - startTime < timeout);
+    
+        // Assert
+        Assert.Equal(requestId, body.RequestId);
+        Assert.Equal("Confirmed", body.Status);
+    }
+
     private record AttendeeStatusResponse(string RequestId, string Status);
 }

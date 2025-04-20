@@ -1,4 +1,5 @@
-using Kodla.Core.Messages;
+using Kodla.Common.Core;
+using Kodla.Common.Core.Messages;
 using Kodla.Meetup.Processor.Data;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ namespace Kodla.Meetup.Processor.Consumers;
 
 public class AttendeeAddedConsumer(
     MeetupDbContext dbContext,
-    // IBus bus,
+    IBus bus,
     ILogger<AttendeeAddedConsumer> logger
 ) : IConsumer<AttendeeAddedMessage>
 {
@@ -35,12 +36,24 @@ public class AttendeeAddedConsumer(
                 slot.Id, message.AttendeeName, message.MeetupId);
             await dbContext.SaveChangesAsync();
 
-            // confirm the slot assignment
+            await bus.Publish(new AttendeeStatusChangedMessage
+            {
+                RequestId = message.RequestId,
+                Status = AttendeeRequestStatus.Confirmed,
+                AttendeeName = message.AttendeeName,
+                MeetupId = message.MeetupId
+            });
         } else {
             logger.LogInformation("No available slots for attendee {AttendeeName} for meetup {MeetupId}",
                 message.AttendeeName, message.MeetupId);
             
-            // attendee in waitlist
+            await bus.Publish(new AttendeeStatusChangedMessage
+            {
+                RequestId = message.RequestId,
+                Status = AttendeeRequestStatus.Queued,
+                AttendeeName = message.AttendeeName,
+                MeetupId = message.MeetupId
+            });
         }
     }
 }
