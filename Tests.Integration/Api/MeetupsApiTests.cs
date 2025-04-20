@@ -3,7 +3,8 @@ using Tests.Integration.Fixtures;
 
 namespace Tests.Integration.Api;
 
-public class MeetupsApiTests(KodlaAppHostFixture appHost) : IClassFixture<KodlaAppHostFixture>
+[Collection(nameof(KodlaAppHostCollection))]
+public class MeetupsApiTests(KodlaAppHostFixture appHost)
 {
     [Fact]
     public async Task GetMeetups_Should_Respond_OK_WithMeetupsList()
@@ -41,14 +42,4 @@ public class MeetupsApiTests(KodlaAppHostFixture appHost) : IClassFixture<KodlaA
         Assert.Equal("Attendee request accepted", responseBody.Message);
         Assert.NotEmpty(responseBody.RequestId);
     }
-
-    private class Meetup
-    {
-        public int MeetupId { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public DateTime Date { get; set; }
-    }
-
-    private record MeetupAttendeeResponse(string Message, string RequestId);
 }

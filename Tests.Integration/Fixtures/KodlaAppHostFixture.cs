@@ -1,4 +1,3 @@
-
 using Aspire.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -49,4 +48,9 @@ public class KodlaAppHostFixture : IAsyncLifetime
         _apiHttpClient?.Dispose();
         return Task.CompletedTask;
     }
+}
+
+[CollectionDefinition(nameof(KodlaAppHostCollection))]
+public class KodlaAppHostCollection : ICollectionFixture<KodlaAppHostFixture>
+{
 }
