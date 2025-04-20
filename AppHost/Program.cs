@@ -43,7 +43,7 @@ var meetupService = builder.AddProject<Kodla_Meetup_Processor>("meetup-processor
 builder.AddProject<Kodla_Api>("api-service")
     .WithReference(rabbitmq).WaitFor(rabbitmq)
     .WithReference(cache).WaitFor(cache)
-    .WithReference(meetupService);
+    .WithReference(meetupService).WaitFor(meetupService);
 
 // Run app
 builder.Build().Run();

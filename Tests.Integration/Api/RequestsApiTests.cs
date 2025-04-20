@@ -48,7 +48,7 @@ public class RequestsApiTests(KodlaAppHostFixture appHost)
         var meetupId = "1";
         var requestBody = new
         {
-            UserName = "John Doe"
+            UserName = "John"
         };
         var attendeeResponse = await appHost.ApiHttpClient.PostAsJsonAsync($"/api/meetups/{meetupId}/attendies", requestBody);
         attendeeResponse.EnsureSuccessStatusCode();

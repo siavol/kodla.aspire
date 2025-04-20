@@ -38,8 +38,10 @@ public class KodlaAppHostFixture : IAsyncLifetime
         _app = await appHostBuilder.BuildAsync().WaitAsync(DefaultTimeout);
         await _app.StartAsync().WaitAsync(DefaultTimeout);
 
-        _apiHttpClient = _app.CreateHttpClient("api-service");
         await _app.ResourceNotifications.WaitForResourceHealthyAsync("api-service").WaitAsync(DefaultTimeout);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("meetup-processor-service").WaitAsync(DefaultTimeout);
+
+        _apiHttpClient = _app.CreateHttpClient("api-service");
     }
 
     Task IAsyncLifetime.DisposeAsync()
