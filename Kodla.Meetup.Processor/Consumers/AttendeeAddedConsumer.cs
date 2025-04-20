@@ -7,7 +7,7 @@ namespace Kodla.Meetup.Processor.Consumers;
 
 public class AttendeeAddedConsumer(
     MeetupDbContext dbContext,
-    IBus bus,
+    // IBus bus,
     ILogger<AttendeeAddedConsumer> logger
 ) : IConsumer<AttendeeAddedMessage>
 {

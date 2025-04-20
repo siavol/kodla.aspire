@@ -10,6 +10,10 @@ var rabbitmq = builder.AddRabbitMQ("rabbitmq")
 var sqlServer = builder.AddSqlServer("sqlserver")
     .WithLifetime(ContainerLifetime.Persistent);
 
+var cache = builder.AddRedis("cache")
+    .WithRedisInsight(insightBuildeer => insightBuildeer.WithLifetime(ContainerLifetime.Persistent))
+    .WithLifetime(ContainerLifetime.Persistent);
+
 if (builder.Environment.EnvironmentName == "Testing")
 {
     // Use temporary containers for testing to avoid conflicts
@@ -19,6 +23,9 @@ if (builder.Environment.EnvironmentName == "Testing")
         .WithLifetime(ContainerLifetime.Session);
     rabbitmq
         .WithContainerName($"test-rabbitmq-{sessionId}")
+        .WithLifetime(ContainerLifetime.Session);
+    cache
+        .WithContainerName($"test-redis-{sessionId}")
         .WithLifetime(ContainerLifetime.Session);
 }
 
@@ -35,6 +42,7 @@ var meetupService = builder.AddProject<Kodla_Meetup_Processor>("meetup-processor
 
 builder.AddProject<Kodla_Api>("api-service")
     .WithReference(rabbitmq).WaitFor(rabbitmq)
+    .WithReference(cache).WaitFor(cache)
     .WithReference(meetupService);
 
 // Run app

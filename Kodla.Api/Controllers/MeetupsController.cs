@@ -1,7 +1,8 @@
 using Kodla.Api.Clients;
 using Kodla.Api.Models;
+using Kodla.Api.Repositories;
+using Kodla.Common.Core;
 using Kodla.Common.Core.Messages;
-using Kodla.Core.Messages;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ namespace Kodla.Api.Controllers;
 public class MeetupsController(
     MeetupProcessorClient meetupProcessorClient,
     IBus messageBus,
+    CacheRepository cacheRepository,
     ILogger<MeetupsController> logger) : ControllerBase
 {
     [HttpGet]
@@ -38,6 +40,7 @@ public class MeetupsController(
             UserName = body.UserName
         };
         await messageBus.Publish(bookingRequestMessage);
+        await cacheRepository.SetAttendeeRequestStatus(requestId, AttendeeRequestStatus.Processing);
 
         return Accepted(new { 
             Message = "Attendee request accepted",

@@ -1,4 +1,6 @@
+using System.Text.Json.Serialization;
 using Kodla.Api.Clients;
+using Kodla.Api.Repositories;
 using Kodla.Meetup.Processor.Grpc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,14 +8,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 builder.AddMassTransitRabbitMq("rabbitmq");
+builder.AddRedisClient("cache");
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 builder.Services.AddOpenApi();
 
 var isHttps = builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https";
 builder.Services
     .AddSingleton<MeetupProcessorClient>()
     .AddGrpcServiceReference<MeetupGrpcService.MeetupGrpcServiceClient>($"{(isHttps ? "https" : "http")}://meetup-processor-service");
+builder.Services
+    .AddScoped<CacheRepository>();
 
 var app = builder.Build();
 
