@@ -14,7 +14,7 @@ public class KodlaAppHostFixture : IAsyncLifetime
     {
     }
 
-    public async Task InitializeAsync()
+    async Task IAsyncLifetime.InitializeAsync()
     {
         var appHostBuilder = await DistributedApplicationTestingBuilder.CreateAsync<Projects.AppHost>([
             "--environment=Testing"
@@ -36,7 +36,7 @@ public class KodlaAppHostFixture : IAsyncLifetime
         await App.StartAsync().WaitAsync(DefaultTimeout);
     }
 
-    public Task DisposeAsync()
+    Task IAsyncLifetime.DisposeAsync()
     {
         App?.Dispose();
         return Task.CompletedTask;
