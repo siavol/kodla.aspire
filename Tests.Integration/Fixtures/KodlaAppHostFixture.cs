@@ -8,7 +8,11 @@ public class KodlaAppHostFixture : IAsyncLifetime
 {
     private static readonly TimeSpan DefaultTimeout = TimeSpan.FromMinutes(2);
 
-    public DistributedApplication? App { get; private set; }
+    public DistributedApplication? _app;
+    private HttpClient? _apiHttpClient;
+
+    public DistributedApplication? App => _app ?? throw new InvalidOperationException("App is not initialized.");
+    public HttpClient ApiHttpClient => _apiHttpClient ?? throw new InvalidOperationException("API HTTP client is not initialized.");
 
     public KodlaAppHostFixture()
     {
@@ -32,13 +36,18 @@ public class KodlaAppHostFixture : IAsyncLifetime
             clientBuilder.AddStandardResilienceHandler();
         });
     
-        App = await appHostBuilder.BuildAsync().WaitAsync(DefaultTimeout);
-        await App.StartAsync().WaitAsync(DefaultTimeout);
+        _app = await appHostBuilder.BuildAsync().WaitAsync(DefaultTimeout);
+        await _app.StartAsync().WaitAsync(DefaultTimeout);
+
+        _apiHttpClient = _app.CreateHttpClient("api-service");
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("api-service").WaitAsync(DefaultTimeout);
+
     }
 
     Task IAsyncLifetime.DisposeAsync()
     {
         App?.Dispose();
+        _apiHttpClient?.Dispose();
         return Task.CompletedTask;
     }
 }
