@@ -56,24 +56,38 @@ public class RequestsApiTests(KodlaAppHostFixture appHost)
         var requestId = attendeeRequestRes!.RequestId;
 
         // Act
-        var timeout = TimeSpan.FromSeconds(10);
-        var pollingInterval = TimeSpan.FromMilliseconds(100);
-        var startTime = DateTime.UtcNow;
-        AttendeeStatusResponse? body;
-        do
-        {
-            await Task.Delay(pollingInterval);
-
-            var statusResponse = await appHost.ApiHttpClient.GetAsync($"/api/requests/{requestId}");
-            statusResponse.EnsureSuccessStatusCode();
-            body = await statusResponse.Content.ReadFromJsonAsync<AttendeeStatusResponse>();
-
-            if (body!.Status == "Processing") continue;
-        } while (DateTime.UtcNow - startTime < timeout);
+        var body = await GetWhileBodyMatchAsync<AttendeeStatusResponse>(
+            $"/api/requests/{requestId}",
+            body => body.Status == "Processing"
+        );
     
         // Assert
         Assert.Equal(requestId, body.RequestId);
         Assert.Equal("Confirmed", body.Status);
+    }
+
+    private async Task<T> GetWhileBodyMatchAsync<T>(string path, Func<T, bool> predicate, 
+        TimeSpan? timeout = default, TimeSpan? pollingInterval = default)
+    {
+        timeout ??= TimeSpan.FromSeconds(10);
+        pollingInterval ??= TimeSpan.FromMilliseconds(200);
+        
+        var startTime = DateTime.UtcNow;
+        T? body;
+        do
+        {
+            await Task.Delay(pollingInterval.Value);
+
+            var statusResponse = await appHost.ApiHttpClient.GetAsync(path);
+            statusResponse.EnsureSuccessStatusCode();
+            body = await statusResponse.Content.ReadFromJsonAsync<T>()
+                ?? throw new Exception("Failed to deserialize response body.");
+
+            if (!predicate(body))
+                return body;
+        } while (DateTime.UtcNow - startTime < timeout);
+
+        throw new TimeoutException($"Timed out waiting for condition on GET {path}.");
     }
 
     private record AttendeeStatusResponse(string RequestId, string Status);
