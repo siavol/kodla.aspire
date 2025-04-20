@@ -39,8 +39,8 @@ public class MeetupsController(
         };
         await messageBus.Publish(bookingRequestMessage);
 
-        return Ok(new { 
-            Message = "Booking request accepted",
+        return Accepted(new { 
+            Message = "Attendee request accepted",
             RequestId = requestId,
         });
     }
