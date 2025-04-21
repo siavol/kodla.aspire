@@ -12,3 +12,8 @@
 
 <!-- Success Message -->
 <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+
+<!-- Link to check request status -->
+<a *ngIf="requestId" [routerLink]="['/request-status', requestId]">
+  Check Request Status
+</a>
