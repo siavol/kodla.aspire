@@ -3,21 +3,7 @@
   <p><strong>Date:</strong> {{ meetup.date | date: 'medium' }}</p>
   <p>{{ meetup.description }}</p>
 
-  <!-- Attendee Request Form -->
-  <form (ngSubmit)="requestAttendee()">
-    <label for="userName">Your Name:</label>
-    <input
-      id="userName"
-      type="text"
-      [(ngModel)]="userName"
-      name="userName"
-      required
-    />
-    <button type="submit" [disabled]="!userName">Attend</button>
-  </form>
-
-  <!-- Success Message -->
-  <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+  <app-request-attendee [meetup]="meetup" />
 </div>
 
 <ng-template #loading>
