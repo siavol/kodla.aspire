@@ -29,4 +29,27 @@ public class MeetupService(
             Meetups = { meetups } 
         };
     }
+
+    public override async Task<GetMeetupByIdResponse> GetMeetupById(GetMeetupByIdRequest request, ServerCallContext context)
+    {
+        logger.LogInformation("Getting meetup with id {MeetupId}", request.MeetupId);
+
+        var meetup = await meetupDbContext.Meetups
+            .Where(m => m.Id == request.MeetupId)
+            .Select(m => new Grpc.Meetup
+            {
+                Id = m.Id,
+                Name = m.Name,
+                Description = m.Description,
+                Date = m.Date.ToString("O")
+            })
+            .FirstOrDefaultAsync();
+
+        if (meetup == null)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, "Meetup not found"));
+        }
+
+        return new GetMeetupByIdResponse { Meetup = meetup };
+    }
 }

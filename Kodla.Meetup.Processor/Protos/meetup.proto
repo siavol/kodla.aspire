@@ -6,6 +6,7 @@ package MeetupApi;
 
 service MeetupGrpcService {
     rpc GetAllMeetups(GetMeetupsRequest) returns (GetMeetupsResponse);
+    rpc GetMeetupById(GetMeetupByIdRequest) returns (GetMeetupByIdResponse);
 }
 
 message GetMeetupsRequest {
@@ -13,6 +14,14 @@ message GetMeetupsRequest {
 
 message GetMeetupsResponse {
     repeated Meetup meetups = 1;
+}
+
+message GetMeetupByIdRequest {
+    int32 meetupId = 1;
+}
+
+message GetMeetupByIdResponse {
+    Meetup meetup = 1;
 }
 
 message Meetup {

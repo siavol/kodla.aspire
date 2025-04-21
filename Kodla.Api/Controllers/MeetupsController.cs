@@ -25,6 +25,22 @@ public class MeetupsController(
         return Ok(meetups.Select(ModelMapper.ToModel));
     }
 
+    [HttpGet("{meetupId}")]
+    public async Task<IActionResult> GetMeetupById([FromRoute] string meetupId)
+    {
+        logger.LogInformation("Getting meetup with id {MeetupId}", meetupId);
+
+        var meetup = await meetupProcessorClient.GetMeetupByIdAsync(meetupId);
+        if (meetup == null)
+        {
+            return NotFound(new { 
+                Message = "Meetup not found" 
+            });
+        }
+
+        return Ok(ModelMapper.ToModel(meetup));
+    }
+
     [HttpPost("{meetupId}/attendies")]
     public async Task<IActionResult> AttendMeetup(
         [FromRoute] string meetupId, 

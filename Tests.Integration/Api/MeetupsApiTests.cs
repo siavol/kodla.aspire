@@ -22,6 +22,23 @@ public class MeetupsApiTests(KodlaAppHostFixture appHost)
     }
 
     [Fact]
+    public async Task GET_Meetup_Should_Respond_OK_WithMeetupDetails()
+    {
+        // Act
+        var meetupId = 1;
+        var response = await appHost.ApiHttpClient.GetAsync($"/api/meetups/{meetupId}");
+    
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        
+        var meetup = await response.Content.ReadFromJsonAsync<Meetup>();
+        Assert.NotNull(meetup);
+        Assert.Equal(meetupId, meetup.MeetupId);
+        Assert.Equal("Best Meetup", meetup.Name);
+        Assert.Equal("The best meetup in Uusimmaa area. Learn some cool stuff.", meetup.Description);
+    }
+
+    [Fact]
     public async Task POST_Meetup_Attendies_Should_Respond_Accepted_WithRequestId()
     {
         // Arrange

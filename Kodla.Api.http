@@ -1,13 +1,18 @@
 @Kodla_Api_HostAddress = http://localhost:5263
 
+@meetupId = 1
+
 ###
 
 GET {{Kodla_Api_HostAddress}}/api/meetups
 
 ###
 
-@meetupId = 1
+GET {{Kodla_Api_HostAddress}}/api/meetups/{{meetupId}}
 
+###
+
+# @name requestAttendee
 POST {{Kodla_Api_HostAddress}}/api/meetups/{{meetupId}}/attendies
 Content-Type: application/json
 
@@ -17,6 +22,6 @@ Content-Type: application/json
 
 ###
 
-@requestId = tbd
+@requestId = {{requestAttendee.response.body.requestId}}
 
 GET {{Kodla_Api_HostAddress}}/api/requests/{{requestId}}

@@ -8,4 +8,16 @@ public class MeetupProcessorClient(MeetupGrpcService.MeetupGrpcServiceClient cli
         var response = await client.GetAllMeetupsAsync(new GetMeetupsRequest());
         return response.Meetups;
     }
+
+    public async Task<Meetup.Processor.Grpc.Meetup> GetMeetupByIdAsync(string meetupId)
+    {
+        if (!int.TryParse(meetupId, out var meetupIdInt)){
+            throw new ArgumentException("MeetupId must be a valid integer", nameof(meetupId));
+        }
+
+        var response = await client.GetMeetupByIdAsync(new GetMeetupByIdRequest { 
+            MeetupId = meetupIdInt
+        });
+        return response.Meetup;
+    }
 }
