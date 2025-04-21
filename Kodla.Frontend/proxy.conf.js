@@ -5,7 +5,7 @@ module.exports = {
       process.env["services__api-service__http__0"],
     secure: process.env["NODE_ENV"] !== "development",
     pathRewrite: {
-      "^/api": "",
+      // "^/api": "",
     },
   },
 };
