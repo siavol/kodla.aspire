@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Meetup } from '../../model/meetup-types';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-meetups-list',
   imports: [
-    CommonModule
+    CommonModule,
+    RouterLink
   ],
   templateUrl: './meetups-list.component.html',
   styleUrl: './meetups-list.component.css'

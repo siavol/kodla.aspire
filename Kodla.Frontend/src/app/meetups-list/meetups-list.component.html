@@ -1,6 +1,10 @@
 <div>
   <h2>Meetups</h2>
-  <div class="meetup-card" *ngFor="let meetup of meetups">
+  <div
+    class="meetup-card"
+    *ngFor="let meetup of meetups"
+    [routerLink]="['/meetup', meetup.meetupId]"
+  >
     <h3>{{ meetup.name }}</h3>
     <p><strong>Date:</strong> {{ meetup.date | date: 'short' }}</p>
     <p>{{ meetup.description }}</p>
