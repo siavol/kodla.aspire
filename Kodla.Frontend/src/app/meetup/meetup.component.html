@@ -1,1 +1,9 @@
-<p>Meetup <strong>{{meetupId}}</strong> will be here!</p>
+<div *ngIf="meetup; else loading">
+  <h2>{{ meetup.name }}</h2>
+  <p><strong>Date:</strong> {{ meetup.date | date: 'medium' }}</p>
+  <p>{{ meetup.description }}</p>
+</div>
+
+<ng-template #loading>
+  <p>Loading meetup details...</p>
+</ng-template>
