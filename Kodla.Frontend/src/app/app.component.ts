@@ -1,34 +1,16 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
-
-type Meetup = {
-  meetupId: number;
-  name: string;
-  description: string;
-  date: string;
-};
+import { MeetupsListComponent } from './meetups-list/meetups-list.component';
 
 @Component({
   selector: 'app-root',
   imports: [
-    CommonModule,
     RouterOutlet,
+    MeetupsListComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Kodla Meetups';
-  meetups: Meetup[] = [];
-
-  constructor(private http: HttpClient) {
-  }
-  ngOnInit(): void {
-    this.http.get<Meetup[]>('api/meetups').subscribe({
-      next: result => this.meetups = result,
-      error: console.error
-    });
-  }
 }
