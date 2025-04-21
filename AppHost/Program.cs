@@ -40,10 +40,16 @@ var meetupService = builder.AddProject<Kodla_Meetup_Processor>("meetup-processor
     .WithReference(rabbitmq).WaitFor(rabbitmq)
     .WithReference(meetupDb).WaitFor(meetupDb);
 
-builder.AddProject<Kodla_Api>("api-service")
+var apiService = builder.AddProject<Kodla_Api>("api-service")
     .WithReference(rabbitmq).WaitFor(rabbitmq)
     .WithReference(cache).WaitFor(cache)
-    .WithReference(meetupService).WaitFor(meetupService);
+    .WithReference(meetupService).WaitFor(meetupService)
+    .WithExternalHttpEndpoints();
+
+builder.AddNpmApp("frontend", "../Kodla.Frontend")
+    .WithReference(apiService).WaitFor(apiService)
+    .WithHttpEndpoint(env: "PORT")
+    .WithExternalHttpEndpoints();
 
 // Run app
 builder.Build().Run();
