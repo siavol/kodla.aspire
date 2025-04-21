@@ -16,10 +16,10 @@
 .meetup-card h3 {
   margin: 0 0 0.5rem;
   font-size: 1.25rem;
-  color: #333;
+  /* color: #333; */
 }
 
 .meetup-card p {
   margin: 0.25rem 0;
-  color: #555;
+  /* color: #555; */
 }

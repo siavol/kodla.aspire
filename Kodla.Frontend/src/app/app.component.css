@@ -1,0 +1,13 @@
+.top-bar {
+  background-color: #333;
+  color: white;
+  padding: 0.25rem 1rem;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.main {
+  padding: 0.5rem;
+}
